@@ -1,0 +1,78 @@
+*------------------------												
+*Problem	Variables											
+*------------------------												
+												
+*Titles												
+title1	=	"Simulation of the right-lateral releasing step over"
+title2	=	"125 m elements"										
+												
+*Rock	Properties											
+pr	=	0.17	*(possion's	ratio)								
+e	=	50000	*(young's	modulus	MPa)							
+k1c	=	1e10	*(mode	I	fracture	toughness,	MPa*m^1/2) 
+tensileStrength	=	70	*(tensile	strength	of	sample,	MPa)	
+*(NB: set k1c (mode I fracture toughness) very high when using GROW to inhibit Fric2D propagation mechanism
+												
+*Symmetry												
+ksym	=	1										
+												
+*Gravitational	stresses											
+gravity	=	0	*(apply	gravity:	0=no,	1=yes)						
+kratio	=	1	*(ratio	of	horizontal:vertical	gravitation	stress)					
+density	=	2550	*(density	of	rock	kg/m^3)						
+												
+*Number	of	Observation	Lines	and	Boundary	Lines						
+nolines	=	0	*(number	of	observation	lines,	must	match	#	lines	designated	below)
+nblines	=	6	*(number	of	boundary	lines,	must	match	#	lines	designated	below)
+												
+*Options	Commands											
+nsteps	=	1	*(number	of	loading	steps)						
+niters	=	1	*(number	of	opening-mode	fracture	propagation	iterations)				
+pdfiter	=	1	*(print	data	from	fracture	prop	iteration)				
+bdata	=	1	*(print	data	along	boundaries:	0=no	1=yes)				
+fdata	=	0	*(print	data	along	(new	fractures:	0=no	1=yes)			
+faultData	=	1	*(print	data	along	faults:	0=no	1=yes)				
+odata	=	0	*(print	observation	line	data:	0=no	1=yes)				
+tolerance	=	1.00E-06	*(test	for	frictinal	slip	convergence)					
+tolCounter	=	20	*(by-pass	tolerance	test	and	exit	convergence	at	this	iteration)	
+												
+end	*(terminate	list)										
+												
+*Observation	Lines											
+*------------------												
+*xbeg	ybeg	xend	yend	numpb								
+												
+*------------------												
+*Boundary	Lines											
+*------------------												
+*(bvs	=	shear;	bvn	=	normal)	STATIC	MONOTONIC					
+*num	xbeg	ybeg	xend	yend	knode	bvs	bvn	bvs	bvn			
+*---	----	----	----	----	-----	---	---	---	---			
+116	10000	0	10000	14500	2	0	0	0	0
+84	10000	14500	10000	25000	2	0	0	0	-1.5
+240	10000	25000	40000	25000	2	0	0	1.5	0
+116	40000	25000	40000	10500	2	0	0	0	1.5	
+84	40000	10500	40000	0	2	0	0	0	0
+240	40000	0	10000	0	2	0	0	0	0
+
+			
+*----------------------												
+*Fault	Conditions 			
+*----------------------												
+*fault	name	grow_tails?	from_end1?	from_end2?								
+*num	xbeg	ybeg	xend	yend	stiffS		stiffN		ten-str	init-coh slid-coh stat-fric dy-fric crit-slip-distance
+*----	----	----	----	----	------		------		---	---	-----	  -------   ------  ---------
+fault	left	no	no	yes								
+*tag	stiffS		stiffN		ten-str	shear-str	coh	int-fric dy-fric crit-slip-distance	
+*Crack	1.00E+10	1.00E+10	18	7		0	0.5	 0.5	 0				
+112	10000	14500	24000	14500	1.00E+10	1.00E+10	0	 0	 0	  0.3	    0.3	    0.00E+00
+
+
+*fault	name	grow_tails?	from_end1?	from_end2?								
+*num	xbeg	ybeg	xend	yend	stiffS		stiffN		ten-str	init-coh slid-coh stat-fric dy-fric crit-slip-distance 
+fault	right	no	yes	no								
+*tag	stiffS		stiffN		ten-str	shear-str	coh	int-fric dy-fric crit-slip-distance
+*Crack	1.00E+10	1.00E+10	18	7		0	0.5	 0.5	 0				
+112	26000	10500	40000	10500	1.00E+10	1.00E+10	0	 0	 0	  0.3	   0.3	    0.00E+00
+
+
